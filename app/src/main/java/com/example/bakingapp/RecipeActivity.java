@@ -1,18 +1,17 @@
 package com.example.bakingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.bakingapp.model.Ingredients;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Steps;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class RecipeActivity extends AppCompatActivity {
@@ -34,8 +33,14 @@ public class RecipeActivity extends AppCompatActivity {
         steps = recipe.getSteps();
 
         ViewStepsFragment viewStepsFragment = new ViewStepsFragment();
-        FragmentManager viewStepsManager = getSupportFragmentManager();
-        viewStepsManager.beginTransaction().add(R.id.recipe_steps_container, viewStepsFragment).commit();
+        replaceFragment(viewStepsFragment);
 
     }
+
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager viewStepsManager = getSupportFragmentManager();
+        viewStepsManager.beginTransaction().add(R.id.recipe_steps_container, fragment).addToBackStack("my_Fragment").commit();
+    }
+
 }

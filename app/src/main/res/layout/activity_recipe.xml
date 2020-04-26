@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".RecipeActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/recipe_steps_container"
-        class = "com.example.bakingapp.ViewStepsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,6 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-    </fragment>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

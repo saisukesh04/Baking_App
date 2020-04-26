@@ -3,9 +3,6 @@ package com.example.bakingapp.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.RecipeActivity;
-import com.example.bakingapp.ViewStepsFragment;
 import com.example.bakingapp.model.Recipe;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {

@@ -3,10 +3,10 @@ package com.example.bakingapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,18 +31,26 @@ public class ViewStepsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_steps, container, false);
 
         stepsRecyclerView = view.findViewById(R.id.stepsRecyclerView);
-        TextView ingredientsText = view.findViewById(R.id.ingredientsText);
+        TextView defaultIngredientsText = view.findViewById(R.id.defaultIngredientsText);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         stepsRecyclerView.setLayoutManager(layoutManager);
         stepsRecyclerView.setAdapter(new StepsAdapter(getActivity(),steps));
 
-        ingredientsText.setOnClickListener(new View.OnClickListener() {
+        defaultIngredientsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Page Under Construction",Toast.LENGTH_SHORT).show();
+                IngredientsFragment ingredientsFragment = new IngredientsFragment();
+                replaceFragment(ingredientsFragment);
             }
         });
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager viewStepsManager = getActivity().getSupportFragmentManager();
+        viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, fragment).addToBackStack("my_Fragment").commit();
     }
 }

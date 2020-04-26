@@ -37,7 +37,7 @@ public class RecipeStepFragment extends Fragment {
 
         PlayerView exoPlayerView = view.findViewById(R.id.exoPlayerView);
 
-        Uri videoUrl = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb88_6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake/6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake.mp4");
+        Uri videoUrl = Uri.parse("");
 
         TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
