@@ -40,7 +40,6 @@ public class ViewStepsFragment extends Fragment {
         defaultIngredientsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Page Under Construction",Toast.LENGTH_SHORT).show();
                 IngredientsFragment ingredientsFragment = new IngredientsFragment();
                 replaceFragment(ingredientsFragment);
             }

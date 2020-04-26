@@ -2,12 +2,13 @@ package com.example.bakingapp;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -25,6 +26,8 @@ import com.google.android.exoplayer2.util.Util;
 
 public class RecipeStepFragment extends Fragment {
 
+    PlayerView exoPlayerView;
+
     public RecipeStepFragment() {
         // Required empty public constructor
     }
@@ -35,21 +38,31 @@ public class RecipeStepFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe_step, container, false);
 
-        PlayerView exoPlayerView = view.findViewById(R.id.exoPlayerView);
+        TextView fullDescription = view.findViewById(R.id.fullDescription);
+        exoPlayerView = view.findViewById(R.id.exoPlayerView);
 
-        Uri videoUrl = Uri.parse("");
+        fullDescription.setText(getArguments().getString("Description"));
+        String videoURL = getArguments().getString("URL");
 
-        TrackSelector trackSelector = new DefaultTrackSelector();
-        LoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
-        exoPlayerView.setPlayer(exoPlayer);
+        if(!videoURL.isEmpty()) {
+            Uri videoUrl = Uri.parse(getArguments().getString("URL"));
 
-        String userAgent = Util.getUserAgent(getContext(), "RecipeVideo");
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        MediaSource mediaSource = new ExtractorMediaSource(videoUrl, dataSourceFactory, extractorsFactory, null, null);
-        exoPlayer.prepare(mediaSource);
-        exoPlayer.setPlayWhenReady(true);
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+            exoPlayerView.setPlayer(exoPlayer);
+
+            String userAgent = Util.getUserAgent(getContext(), "RecipeVideo");
+            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
+            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+            MediaSource mediaSource = new ExtractorMediaSource(videoUrl, dataSourceFactory, extractorsFactory, null, null);
+            exoPlayer.prepare(mediaSource);
+            exoPlayer.setPlayWhenReady(true);
+        }else{
+            ImageView videoErrorImage = view.findViewById(R.id.videoErrorImage);
+            videoErrorImage.setVisibility(View.VISIBLE);
+            exoPlayerView.setVisibility(View.GONE);
+        }
 
         return view;
     }

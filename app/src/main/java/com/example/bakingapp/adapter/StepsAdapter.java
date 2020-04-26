@@ -1,6 +1,7 @@
 package com.example.bakingapp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,15 +38,20 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull StepsAdapter.ViewHolder holder, int position) {
-        Steps steps = stepsData.get(position);
+        final Steps steps = stepsData.get(position);
         assert steps != null;
         holder.descriptionText.setText(steps.getShortDescription());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Page Under Construction",Toast.LENGTH_SHORT).show();
+                RecipeStepFragment recipeStepFragment = new RecipeStepFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL",steps.getVideoURL());
+                bundle.putString("Description",steps.getDescription());
+                recipeStepFragment.setArguments(bundle);
                 FragmentManager viewStepsManager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-                viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, new RecipeStepFragment()).addToBackStack("my_Fragment").commit();
+                viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, recipeStepFragment).addToBackStack("my_Fragment").commit();
             }
         });
     }
