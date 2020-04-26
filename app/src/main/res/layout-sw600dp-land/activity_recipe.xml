@@ -7,8 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".RecipeActivity">
 
-    <FrameLayout
+    <fragment
         android:id="@+id/recipe_steps_container"
+        class = "com.example.bakingapp.ViewStepsFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
@@ -23,8 +24,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
+    <fragment
         android:id="@+id/view_step_container"
+        class = "com.example.bakingapp.RecipeStepFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"

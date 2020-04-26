@@ -1,29 +1,25 @@
 package com.example.bakingapp;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
+import com.example.bakingapp.adapter.StepsAdapter;
+
+import static com.example.bakingapp.RecipeActivity.steps;
 
 public class ViewStepsFragment extends Fragment {
+
+    RecyclerView stepsRecyclerView;
 
     public ViewStepsFragment() {
         // Required empty public constructor
@@ -34,22 +30,19 @@ public class ViewStepsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_steps, container, false);
 
-        PlayerView exoPlayerView = view.findViewById(R.id.exoPlayerView);
+        stepsRecyclerView = view.findViewById(R.id.stepsRecyclerView);
+        TextView ingredientsText = view.findViewById(R.id.ingredientsText);
 
-        Uri videoUrl = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb88_6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake/6-add-the-batter-to-the-pan-w-the-crumbs-cheesecake.mp4");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        stepsRecyclerView.setLayoutManager(layoutManager);
+        stepsRecyclerView.setAdapter(new StepsAdapter(getActivity(),steps));
 
-        TrackSelector trackSelector = new DefaultTrackSelector();
-        LoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
-        exoPlayerView.setPlayer(exoPlayer);
-
-        String userAgent = Util.getUserAgent(getContext(), "RecipeVideo");
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        MediaSource mediaSource = new ExtractorMediaSource(videoUrl, dataSourceFactory, extractorsFactory, null, null);
-        exoPlayer.prepare(mediaSource);
-        exoPlayer.setPlayWhenReady(true);
-
+        ingredientsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Page Under Construction",Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 }
