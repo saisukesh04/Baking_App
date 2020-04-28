@@ -5,4 +5,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ingredients">Ingredients</string>
     <string name="defaultTextView">TextView</string>
+    <string name="appwidget_text">Baking App</string>
+    <string name="add_widget">Add widget</string>
 </resources>

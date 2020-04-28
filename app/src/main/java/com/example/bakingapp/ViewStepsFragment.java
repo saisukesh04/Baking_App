@@ -7,11 +7,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.bakingapp.adapter.StepsAdapter;
 
@@ -19,7 +19,7 @@ import static com.example.bakingapp.RecipeActivity.steps;
 
 public class ViewStepsFragment extends Fragment {
 
-    RecyclerView stepsRecyclerView;
+    private RecyclerView stepsRecyclerView;
 
     public ViewStepsFragment() {
         // Required empty public constructor
