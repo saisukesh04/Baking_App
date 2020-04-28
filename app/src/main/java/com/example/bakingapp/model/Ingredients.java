@@ -1,13 +1,22 @@
 package com.example.bakingapp.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity(tableName = "ingredient")
 public class Ingredients implements Serializable {
 
     private String quantity;
     private String measure;
+    @NonNull
+    @PrimaryKey
     private String ingredient;
 
+    @Ignore
     public Ingredients(){
     }
 

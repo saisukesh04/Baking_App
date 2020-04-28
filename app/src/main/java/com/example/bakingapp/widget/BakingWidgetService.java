@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import android.widget.Toast;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.database.IngredientsDatabase;
 import com.example.bakingapp.model.Ingredients;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.bakingapp.RecipeActivity.ingredients;
@@ -23,7 +26,8 @@ public class BakingWidgetService extends RemoteViewsService {
 
         private Context context;
         private int appWidgetId;
-        private List<Ingredients> ingredientsList = ingredients;
+        private List<Ingredients> ingredientsList = new ArrayList<>();
+        IngredientsDatabase mDatabase;
 
 
         public BakingWidgetViewsFactory(Context context, Intent intent) {
@@ -33,10 +37,15 @@ public class BakingWidgetService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
+            Toast.makeText(context,"New Widget created",Toast.LENGTH_SHORT);
         }
 
         @Override
         public void onDataSetChanged() {
+            mDatabase = IngredientsDatabase.getInstance(context);
+            ingredientsList.clear();
+            List<Ingredients> ingredients = mDatabase.IngredientDao().loadAllIngredients();
+            ingredientsList.addAll(ingredients);
         }
 
         @Override
@@ -46,7 +55,7 @@ public class BakingWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return ingredientsList.size();
+            return ingredientsList != null? ingredientsList.size(): 0;
         }
 
         @Override

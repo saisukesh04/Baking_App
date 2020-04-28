@@ -5,16 +5,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.example.bakingapp.database.IngredientsDatabase;
 import com.example.bakingapp.model.Ingredients;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Steps;
+import com.example.bakingapp.widget.BakingWidget;
 
 import java.util.List;
 
@@ -23,6 +28,8 @@ public class RecipeActivity extends AppCompatActivity {
     static List<Steps> steps;
     public static List<Ingredients> ingredients;
     FragmentManager viewStepsManager;
+    IngredientsDatabase mDatabase;
+    private Recipe recipe;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -35,16 +42,35 @@ public class RecipeActivity extends AppCompatActivity {
             Toast.makeText(this, "Large screen",Toast.LENGTH_LONG).show();
         }
 
+        mDatabase = IngredientsDatabase.getInstance(getApplicationContext());
+
         Log.i("Info: ","Activity Created");
         Intent adapterIntent = getIntent();
-        Recipe recipe = (Recipe) adapterIntent.getSerializableExtra("recipe");
+        recipe = (Recipe) adapterIntent.getSerializableExtra("recipe");
 
         assert recipe != null;
         ingredients = recipe.getIngredients();
         steps = recipe.getSteps();
 
+        refreshWidgets();
+
         ViewStepsFragment viewStepsFragment = new ViewStepsFragment();
         replaceFragment(viewStepsFragment);
+    }
+
+    private void refreshWidgets() {
+
+        mDatabase.IngredientDao().deleteAll();
+        for (int i = 0; i < ingredients.size(); i++) {
+            mDatabase.IngredientDao().insertIngredients(ingredients.get(i));
+        }
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplication());
+        int ids[] = appWidgetManager.getAppWidgetIds(new ComponentName(getApplication(), BakingWidget.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.list_view_widget);
+
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.baking_widget);
+        remoteViews.setTextViewText(R.id.appwidget_text, recipe.getName());
+        appWidgetManager.partiallyUpdateAppWidget(ids, remoteViews);
     }
 
     private void replaceFragment(Fragment fragment) {
