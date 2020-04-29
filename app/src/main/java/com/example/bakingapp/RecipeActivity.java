@@ -24,6 +24,7 @@ import java.util.List;
 
 public class RecipeActivity extends AppCompatActivity {
 
+    public static boolean DualPane;
     static List<Steps> steps;
     public static List<Ingredients> ingredients;
     FragmentManager viewStepsManager;
@@ -36,9 +37,15 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
+        if(findViewById(R.id.view_step_container) == null){
+            DualPane = false;
+        }else{
+            DualPane = true;
+        }
+
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            Toast.makeText(this, "Large screen",Toast.LENGTH_LONG).show();
+            DualPane = true;
         }
 
         mDatabase = IngredientsDatabase.getInstance(getApplicationContext());

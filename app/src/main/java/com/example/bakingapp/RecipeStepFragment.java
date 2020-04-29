@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.bakingapp.model.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -22,34 +27,58 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
+
+import java.util.List;
+
+import static com.example.bakingapp.RecipeActivity.DualPane;
 
 public class RecipeStepFragment extends Fragment {
 
-    PlayerView exoPlayerView;
+    SimpleExoPlayer exoPlayer;
+    private List<Steps> steps;
+    private int position;
 
-    public RecipeStepFragment() {
-        // Required empty public constructor
+    public RecipeStepFragment(List<Steps> steps, int position) {
+        this.position = position;
+        this.steps = steps;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recipe_step, container, false);
+        final View view = inflater.inflate(R.layout.fragment_recipe_step, container, false);
+
+        Button prevRecipeBtn = view.findViewById(R.id.prevRecipeBtn);
+        final Button nextRecipeBtn = view.findViewById(R.id.nextRecipeBtn);
 
         TextView fullDescription = view.findViewById(R.id.fullDescription);
-        exoPlayerView = view.findViewById(R.id.exoPlayerView);
+        final PlayerView exoPlayerView = view.findViewById(R.id.exoPlayerView);
 
-        fullDescription.setText(getArguments().getString("Description"));
-        String videoURL = getArguments().getString("URL");
+        Log.i("Info: ", "Screen Changed");
+
+        if(position == steps.size()-1){
+            prevRecipeBtn.setEnabled(true);
+            nextRecipeBtn.setEnabled(false);
+        }else if(position == 0){
+            prevRecipeBtn.setEnabled(false);
+            nextRecipeBtn.setEnabled(true);
+        }else{
+            prevRecipeBtn.setEnabled(true);
+            nextRecipeBtn.setEnabled(true);
+        }
+
+        final String videoURL = steps.get(position).getVideoURL();
+        fullDescription.setText(steps.get(position).getDescription());
 
         if(!videoURL.isEmpty()) {
-            Uri videoUrl = Uri.parse(getArguments().getString("URL"));
+            Uri videoUrl = Uri.parse(videoURL);
 
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
-            SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+            exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
             exoPlayerView.setPlayer(exoPlayer);
 
             String userAgent = Util.getUserAgent(getContext(), "RecipeVideo");
@@ -64,6 +93,39 @@ public class RecipeStepFragment extends Fragment {
             exoPlayerView.setVisibility(View.GONE);
         }
 
+        prevRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Previous Button Pressed!", Toast.LENGTH_SHORT).show();
+                replaceRecipeStep(getActivity(),position - 1, steps);
+                if(!videoURL.isEmpty()) {
+                    exoPlayer.setPlayWhenReady(false);
+                }
+            }
+        });
+
+        nextRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Next Button Pressed!", Toast.LENGTH_SHORT).show();
+                replaceRecipeStep(getActivity(),position + 1, steps);
+                if(!videoURL.isEmpty()) {
+                    exoPlayer.setPlayWhenReady(false);
+                }
+            }
+        });
+
         return view;
     }
+
+    public static void replaceRecipeStep(FragmentActivity context, int position, List<Steps> stepsData) {
+        if (DualPane) {
+            FragmentManager viewStepsManager = context.getSupportFragmentManager();
+            viewStepsManager.beginTransaction().replace(R.id.view_step_container, new RecipeStepFragment(stepsData, position)).commit();
+        }else{
+            FragmentManager viewStepsManager = context.getSupportFragmentManager();
+            viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, new RecipeStepFragment(stepsData, position)).commit();
+        }
+    }
+
 }

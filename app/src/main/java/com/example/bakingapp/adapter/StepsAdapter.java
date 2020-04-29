@@ -5,11 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
@@ -37,21 +35,14 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StepsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StepsAdapter.ViewHolder holder, final int position) {
         final Steps steps = stepsData.get(position);
         assert steps != null;
         holder.descriptionText.setText(steps.getShortDescription());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"Page Under Construction",Toast.LENGTH_SHORT).show();
-                RecipeStepFragment recipeStepFragment = new RecipeStepFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("URL",steps.getVideoURL());
-                bundle.putString("Description",steps.getDescription());
-                recipeStepFragment.setArguments(bundle);
-                FragmentManager viewStepsManager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-                viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, recipeStepFragment).addToBackStack("my_Fragment").commit();
+                replaceRecipeStep(((FragmentActivity) v.getContext()), position, stepsData);
             }
         });
     }

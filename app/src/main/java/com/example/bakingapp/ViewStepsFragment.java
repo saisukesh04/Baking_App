@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.bakingapp.adapter.StepsAdapter;
 
+import static com.example.bakingapp.RecipeActivity.DualPane;
 import static com.example.bakingapp.RecipeActivity.steps;
 
 public class ViewStepsFragment extends Fragment {
@@ -46,7 +47,12 @@ public class ViewStepsFragment extends Fragment {
 
     private void replaceFragment(Fragment fragment) {
 
-        FragmentManager viewStepsManager = getActivity().getSupportFragmentManager();
-        viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, fragment).addToBackStack("my_Fragment").commit();
+        if(DualPane) {
+            FragmentManager viewStepsManager = getActivity().getSupportFragmentManager();
+            viewStepsManager.beginTransaction().replace(R.id.view_step_container, fragment).commit();
+        }else{
+            FragmentManager viewStepsManager = getActivity().getSupportFragmentManager();
+            viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, fragment).commit();
+        }
     }
 }
