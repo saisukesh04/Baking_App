@@ -1,7 +1,6 @@
 package com.example.bakingapp.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.RecipeStepFragment;
 import com.example.bakingapp.model.Steps;
 
 import java.util.List;
@@ -61,11 +59,11 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
         return stepsData != null? stepsData.size(): 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView descriptionText;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             descriptionText = itemView.findViewById(R.id.descriptionText);
         }

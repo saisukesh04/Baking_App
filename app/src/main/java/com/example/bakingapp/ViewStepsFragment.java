@@ -18,8 +18,6 @@ import static com.example.bakingapp.RecipeActivity.steps;
 
 public class ViewStepsFragment extends Fragment {
 
-    private RecyclerView stepsRecyclerView;
-
     public ViewStepsFragment() {
         // Required empty public constructor
     }
@@ -29,7 +27,7 @@ public class ViewStepsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_steps, container, false);
 
-        stepsRecyclerView = view.findViewById(R.id.stepsRecyclerView);
+        RecyclerView stepsRecyclerView = view.findViewById(R.id.stepsRecyclerView);
         TextView defaultIngredientsText = view.findViewById(R.id.defaultIngredientsText);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

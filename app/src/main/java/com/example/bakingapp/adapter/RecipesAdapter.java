@@ -63,12 +63,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         return data != null? data.size(): 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView recipeImageView;
         TextView recipeName;
 
-        public ViewHolder(@NonNull View itemView) {
+         ViewHolder(@NonNull View itemView) {
             super(itemView);
             recipeImageView = itemView.findViewById(R.id.recipeImageView);
             recipeName = itemView.findViewById(R.id.recipeName);

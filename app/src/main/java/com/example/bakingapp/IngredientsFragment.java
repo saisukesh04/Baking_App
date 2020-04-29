@@ -16,8 +16,6 @@ import static com.example.bakingapp.RecipeActivity.ingredients;
 
 public class IngredientsFragment extends Fragment {
 
-    RecyclerView ingredientsRecyclerView;
-
     public IngredientsFragment() {
         // Required empty public constructor
     }
@@ -28,7 +26,8 @@ public class IngredientsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_ingredients, container, false);
 
-        ingredientsRecyclerView = view.findViewById(R.id.ingredientsRecyclerView);
+        RecyclerView ingredientsRecyclerView = view.findViewById(R.id.ingredientsRecyclerView);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         ingredientsRecyclerView.setLayoutManager(layoutManager);
         ingredientsRecyclerView.setAdapter(new IngredientsAdapter(getActivity(),ingredients));

@@ -7,4 +7,6 @@
     <string name="defaultTextView">TextView</string>
     <string name="appwidget_text">Baking App</string>
     <string name="add_widget">Add widget</string>
+    <string name="previous_step">Previous Step</string>
+    <string name="next_step">Next Step</string>
 </resources>

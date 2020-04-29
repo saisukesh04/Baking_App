@@ -44,10 +44,10 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         return ingredientsData != null? ingredientsData.size(): 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+     class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView ingredientText, quantityText;
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientText = itemView.findViewById(R.id.ingredientText);
             quantityText = itemView.findViewById(R.id.quantityText);

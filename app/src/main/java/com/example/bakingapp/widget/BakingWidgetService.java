@@ -14,8 +14,6 @@ import com.example.bakingapp.model.Ingredients;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.bakingapp.RecipeActivity.ingredients;
-
 public class BakingWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -37,7 +35,7 @@ public class BakingWidgetService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            Toast.makeText(context,"New Widget created",Toast.LENGTH_SHORT);
+            Toast.makeText(context,"New Widget created",Toast.LENGTH_SHORT).show();
         }
 
         @Override

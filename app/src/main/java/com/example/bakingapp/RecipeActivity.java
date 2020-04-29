@@ -13,7 +13,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.example.bakingapp.database.IngredientsDatabase;
 import com.example.bakingapp.model.Ingredients;
@@ -44,7 +43,6 @@ public class RecipeActivity extends AppCompatActivity {
 
         mDatabase = IngredientsDatabase.getInstance(getApplicationContext());
 
-        Log.i("Info: ","Activity Created");
         Intent adapterIntent = getIntent();
         recipe = (Recipe) adapterIntent.getSerializableExtra("recipe");
 
