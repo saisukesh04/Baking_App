@@ -17,6 +17,8 @@ import com.example.bakingapp.model.Steps;
 
 import java.util.List;
 
+import static com.example.bakingapp.RecipeStepFragment.replaceRecipeStep;
+
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
 
     private List<Steps> stepsData;
