@@ -22,6 +22,9 @@ import com.example.bakingapp.widget.BakingWidget;
 
 import java.util.List;
 
+import static com.example.bakingapp.RecipeStepFragment.exoPlayer;
+import static com.example.bakingapp.RecipeStepFragment.videoURL;
+
 public class RecipeActivity extends AppCompatActivity {
 
     public static boolean DualPane;
@@ -87,6 +90,11 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(videoURL!=null) {
+            if (!videoURL.isEmpty()) {
+                exoPlayer.setPlayWhenReady(false);
+            }
+        }
         if(viewStepsManager.getBackStackEntryCount() == 0){
             finish();
         }

@@ -35,7 +35,6 @@ public class BakingWidgetService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            Toast.makeText(context,"New Widget created",Toast.LENGTH_SHORT).show();
         }
 
         @Override

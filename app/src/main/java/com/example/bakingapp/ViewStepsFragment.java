@@ -52,7 +52,7 @@ public class ViewStepsFragment extends Fragment {
             viewStepsManager.beginTransaction().replace(R.id.view_step_container, fragment).commit();
         }else{
             FragmentManager viewStepsManager = getActivity().getSupportFragmentManager();
-            viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, fragment).commit();
+            viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, fragment).addToBackStack("My_Fragment").commit();
         }
     }
 }

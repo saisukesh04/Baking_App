@@ -42,7 +42,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceRecipeStep(((FragmentActivity) v.getContext()), position, stepsData);
+                replaceRecipeStep(((FragmentActivity) v.getContext()), position, stepsData, true);
             }
         });
     }

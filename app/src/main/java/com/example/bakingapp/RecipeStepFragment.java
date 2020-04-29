@@ -36,9 +36,10 @@ import static com.example.bakingapp.RecipeActivity.DualPane;
 
 public class RecipeStepFragment extends Fragment {
 
-    SimpleExoPlayer exoPlayer;
+    static SimpleExoPlayer exoPlayer;
     private List<Steps> steps;
     private int position;
+    static String videoURL;
 
     public RecipeStepFragment(List<Steps> steps, int position) {
         this.position = position;
@@ -70,7 +71,7 @@ public class RecipeStepFragment extends Fragment {
             nextRecipeBtn.setEnabled(true);
         }
 
-        final String videoURL = steps.get(position).getVideoURL();
+        videoURL = steps.get(position).getVideoURL();
         fullDescription.setText(steps.get(position).getDescription());
 
         if(!videoURL.isEmpty()) {
@@ -96,8 +97,7 @@ public class RecipeStepFragment extends Fragment {
         prevRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Previous Button Pressed!", Toast.LENGTH_SHORT).show();
-                replaceRecipeStep(getActivity(),position - 1, steps);
+                replaceRecipeStep(getActivity(),position - 1, steps, false);
                 if(!videoURL.isEmpty()) {
                     exoPlayer.setPlayWhenReady(false);
                 }
@@ -107,8 +107,7 @@ public class RecipeStepFragment extends Fragment {
         nextRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Next Button Pressed!", Toast.LENGTH_SHORT).show();
-                replaceRecipeStep(getActivity(),position + 1, steps);
+                replaceRecipeStep(getActivity(),position + 1, steps, false);
                 if(!videoURL.isEmpty()) {
                     exoPlayer.setPlayWhenReady(false);
                 }
@@ -118,13 +117,17 @@ public class RecipeStepFragment extends Fragment {
         return view;
     }
 
-    public static void replaceRecipeStep(FragmentActivity context, int position, List<Steps> stepsData) {
+    public static void replaceRecipeStep(FragmentActivity context, int position, List<Steps> stepsData, boolean addToBackStack) {
         if (DualPane) {
             FragmentManager viewStepsManager = context.getSupportFragmentManager();
             viewStepsManager.beginTransaction().replace(R.id.view_step_container, new RecipeStepFragment(stepsData, position)).commit();
         }else{
             FragmentManager viewStepsManager = context.getSupportFragmentManager();
-            viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, new RecipeStepFragment(stepsData, position)).commit();
+            if(addToBackStack) {
+                viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, new RecipeStepFragment(stepsData, position)).addToBackStack("my_Fragment").commit();
+            }else{
+                viewStepsManager.beginTransaction().replace(R.id.recipe_steps_container, new RecipeStepFragment(stepsData, position)).commit();
+            }
         }
     }
 
