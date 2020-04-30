@@ -1,6 +1,7 @@
 package com.example.bakingapp;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,8 @@ public class RecipeStepFragment extends Fragment {
     private List<Steps> steps;
     private int position;
     static String videoURL;
+    MediaSource mediaSource;
+    TrackSelector trackSelector;
 
     public RecipeStepFragment(List<Steps> steps, int position) {
         this.position = position;
@@ -77,7 +80,7 @@ public class RecipeStepFragment extends Fragment {
         if(!videoURL.isEmpty()) {
             Uri videoUrl = Uri.parse(videoURL);
 
-            TrackSelector trackSelector = new DefaultTrackSelector();
+            trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
             exoPlayerView.setPlayer(exoPlayer);
@@ -85,7 +88,7 @@ public class RecipeStepFragment extends Fragment {
             String userAgent = Util.getUserAgent(getContext(), "RecipeVideo");
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
             ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-            MediaSource mediaSource = new ExtractorMediaSource(videoUrl, dataSourceFactory, extractorsFactory, null, null);
+            mediaSource = new ExtractorMediaSource(videoUrl, dataSourceFactory, extractorsFactory, null, null);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
         }else{
@@ -131,4 +134,30 @@ public class RecipeStepFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            Log.i("Info: ", "OnPause or OnStop");
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            Log.i("Info: ", "OnPause or OnStop");
+            releasePlayer();
+        }
+    }
+
+    private void releasePlayer() {
+        if(!videoURL.isEmpty()) {
+            exoPlayer.release();
+            exoPlayer = null;
+            mediaSource = null;
+            trackSelector = null;
+        }
+    }
 }

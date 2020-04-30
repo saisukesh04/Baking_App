@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.bakingapp.adapter.RecipesAdapter;
 import com.example.bakingapp.data.RetrofitObjectJSON;
@@ -39,24 +43,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void getRetrofitData() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(BASE_URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        RetrofitObjectJSON service = retrofit.create(RetrofitObjectJSON.class);
-        Call<List<Recipe>> call =  service.getRecipesJson();
-        call.enqueue(new Callback<List<Recipe>>() {
-            @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                List<Recipe> recipes = response.body();
-                recipeRecyclerView.setAdapter(new RecipesAdapter(getApplicationContext(), recipes));
-            }
+        if(isConnected) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-            @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Log.i("Info: ", t.getMessage());
-            }
-        });
+            RetrofitObjectJSON service = retrofit.create(RetrofitObjectJSON.class);
+            Call<List<Recipe>> call = service.getRecipesJson();
+            call.enqueue(new Callback<List<Recipe>>() {
+                @Override
+                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                    List<Recipe> recipes = response.body();
+                    recipeRecyclerView.setAdapter(new RecipesAdapter(getApplicationContext(), recipes));
+                }
+
+                @Override
+                public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                    Log.i("Info: ", t.getMessage());
+                }
+            });
+        }else{
+            Toast.makeText(this, "Please check your INTERNET connection!", Toast.LENGTH_LONG).show();
+        }
     }
 }
