@@ -1,8 +1,12 @@
 package com.example.bakingapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.IdlingResource;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.bakingapp.adapter.RecipesAdapter;
 import com.example.bakingapp.data.RetrofitObjectJSON;
+import com.example.bakingapp.idling.BakingIdlingResource;
 import com.example.bakingapp.model.Recipe;
 
 import java.util.List;
@@ -27,6 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recipeRecyclerView;
     private static String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
+
+    @Nullable
+    private BakingIdlingResource appIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (appIdlingResource == null) {
+            appIdlingResource = new BakingIdlingResource();
+        }
+        return appIdlingResource;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
